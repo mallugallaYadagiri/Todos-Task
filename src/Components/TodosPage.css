@@ -1,5 +1,74 @@
 @import url("https://fonts.googleapis.com/css2?family=Crimson+Text:wght@600&family=Inter:wght@500&family=Libre+Baskerville&family=Poppins:wght@200;700&family=RocknRoll+One&display=swap");
 
 body {
-  background-color: rgb(161, 221, 161);
+  background-color: #3c486b;
+  background: linear-gradient(#183d3d, #2e7474);
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+}
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 1em 0;
+}
+.input-box {
+  height: 2em;
+  width: 30em;
+}
+.toggle {
+  display: flex;
+  justify-content: space-around;
+  margin: 1em 0;
+}
+.task-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 35em;
+  margin: 0.5em 0.2em;
+  border-radius: 5px;
+  border: 2px solid white;
+}
+
+.completed-task {
+  background-color: #98d8aa;
+}
+.incomplete-task {
+  background-color: #ff6666;
+}
+.task {
+  padding: 0.5em 0.2em;
+  margin: 0;
+  margin-left: 0.5em;
+}
+.icons {
+  display: flex;
+  justify-content: space-between;
+  width: 3.5em;
+}
+.toggle button {
+  background-color: #394466;
+  color: white;
+  font-weight: bold;
+  padding: 0.2em 0.5em;
+  border-radius: 1em;
+  border: 2px solid white;
+}
+
+.add-btn,
+button:hover {
+  color: #394466;
+  background-color: white;
+  border: 2px solid #394466;
+}
+
+.add-btn {
+  background-color: #394466;
+  color: white;
+  font-weight: bold;
+  padding: 0.2em 0.5em;
+  margin-left: 0.5em;
+  border: 2px solid white;
 }
