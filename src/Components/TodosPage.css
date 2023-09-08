@@ -72,3 +72,7 @@ button:hover {
   margin-left: 0.5em;
   border: 2px solid white;
 }
+.error-message {
+  color: red;
+  text-align: center;
+}

@@ -7,6 +7,9 @@ function TodosPage() {
   const [todos, setTodos] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [filterTasks, setFilterTasks] = useState("All");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [editMode, setEditMode] = useState(false);
+  const [editTodoId, setEditTodoId] = useState(null);
 
   let API_URL = "https://jsonplaceholder.typicode.com/users/1/todos";
   useEffect(() => {
@@ -23,26 +26,54 @@ function TodosPage() {
 
   const addTodo = () => {
     if (newTask.trim() !== "") {
-      const newTodo = {
-        id: todos.length + 1,
-        title: newTask,
-        completed: false,
-      };
-      setTodos([newTodo, ...todos]);
+      if (editMode) {
+        const updatedTodos = todos.map((todo) => {
+          if (todo.id === editTodoId) {
+            return { ...todo, title: newTask };
+          }
+          return todo;
+        });
+        setTodos(updatedTodos);
+        setEditMode(false);
+        setEditTodoId(null);
+      } else {
+        const newTodo = {
+          id: todos.length + 1,
+          title: newTask,
+          completed: false,
+        };
+        setTodos([newTodo, ...todos]);
+      }
       setNewTask("");
+      setErrorMessage("");
+    } else {
+      setErrorMessage("The task name should not be empty.");
     }
   };
+
   const editTodo = (id) => {
     const taskToEdit = todos.find((todo) => todo.id === id);
     if (taskToEdit) {
       setNewTask(taskToEdit.title);
-      const updatedTodos = todos.filter((todo) => todo.id !== id);
-      setTodos(updatedTodos);
+      setEditMode(true);
+      setEditTodoId(id);
     }
   };
-  const deleteTodo = (id) => {
-    const updatedTodos = todos.filter((todo) => todo.id !== id);
 
+  const toggleCompleteStatus = (id) => {
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        return { ...todo, completed: !todo.completed };
+      }
+      return todo;
+    });
+    setTodos(updatedTodos);
+  };
+
+  const deleteTodo = (id) => {
+    console.log("Deleting todo with id:", id);
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    console.log("Updated Todos:", updatedTodos);
     setTodos(updatedTodos);
   };
 
@@ -51,22 +82,15 @@ function TodosPage() {
       return true;
     } else if (filterTasks === "Completed") {
       return todo.completed;
-    } else {
+    } else if (filterTasks === "Incomplete") {
       return !todo.completed;
     }
+    return true;
   });
 
-  const toggleTodo = (taskId) => {
-    const updatedTodos = todos.map((todo) => {
-      if (todo.id === taskId) {
-        return { ...todo, completed: !todo.completed };
-      }
-      return todo;
-    });
-    setTodos(updatedTodos);
-  };
   return (
     <div>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <div className="input-container">
         <input
           className="input-box"
@@ -76,9 +100,10 @@ function TodosPage() {
         />
 
         <button type="button" className="add-btn" onClick={addTodo}>
-          Add Task
+          {editMode ? "Update Task" : "Add Task"}
         </button>
       </div>
+
       <div className="toggle">
         <button onClick={() => setFilterTasks("Completed")}>Completed</button>
         <button onClick={() => setFilterTasks("Incomplete")}>Incomplete</button>
@@ -91,9 +116,14 @@ function TodosPage() {
             className={`task-container ${
               todo.completed ? "completed-task" : "incomplete-task"
             }`}
-            onClick={() => toggleTodo(todo.id)}
           >
-            <p className="task">{todo.title}</p>
+            <p
+              className={`task ${todo.completed ? "completed" : ""}`}
+              onClick={() => toggleCompleteStatus(todo.id)} // Toggle the completion status
+            >
+              {todo.completed ? <del>{todo.title}</del> : todo.title}
+            </p>
+
             <div className="icons ">
               <MdEditSquare
                 size={25}
