@@ -122,8 +122,8 @@ function TodosPage() {
             }`}
           >
             <p
-              className={`task ${todo.completed ? "completed" : ""}`}
-              onClick={() => toggleCompleteStatus(todo.id)} // Toggle the completion status
+              className={`task ${todo.completed ? "completed-task" : ""}`}
+              onClick={() => toggleCompleteStatus(todo.id)}
             >
               {todo.completed ? <del>{todo.title}</del> : todo.title}
             </p>
