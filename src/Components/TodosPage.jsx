@@ -10,6 +10,7 @@ function TodosPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [editTodoId, setEditTodoId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   let API_URL = "https://jsonplaceholder.typicode.com/users/1/todos";
   useEffect(() => {
@@ -18,9 +19,11 @@ function TodosPage() {
       .then((response) => {
         console.log(response.data);
         setTodos(response.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
+        setLoading(false);
       });
   }, [API_URL]);
 
@@ -109,6 +112,7 @@ function TodosPage() {
         <button onClick={() => setFilterTasks("Incomplete")}>Incomplete</button>
         <button onClick={() => setFilterTasks("All")}>Show All</button>
       </div>
+      {loading && <h2 className="loading-message">Loading tasks...</h2>}
       <div>
         {filteredTodos.map((todo) => (
           <div

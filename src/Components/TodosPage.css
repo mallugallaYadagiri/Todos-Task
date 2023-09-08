@@ -76,3 +76,7 @@ button:hover {
   color: red;
   text-align: center;
 }
+
+.loading-message {
+  text-align: center;
+}
